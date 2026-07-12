@@ -1,0 +1,61 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Wakeo
+providerId: wakeo
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Supply Chain
+- Transportation Visibility
+- Multimodal
+- Logistics
+- Plans
+description: >-
+  Wakeo is an enterprise SaaS platform with no public, self-serve pricing. The
+  platform and its API are sold on a commercial, customer-provisioned basis -
+  prospective customers engage Wakeo sales, and API credentials plus access to
+  the password-protected documentation are granted by a Customer Success
+  representative or via support@wakeo.co. Pricing is understood to be
+  subscription / contract-based, typically scoped to tracked shipment volume,
+  transport modes, and platform modules (Track and Trace, Analytics, Carbon
+  Footprint, Trusted Routes), but no rate card is published. Exact terms are not
+  reconciled here.
+notes: >-
+  No public pricing page exists. Verify tiers, shipment-volume bands, module
+  bundling, and API access terms directly with Wakeo during reconciliation.
+sources:
+- https://wakeo.co/
+- https://wakeo.co/platform/overview/
+- https://docs.wakeo.co/docs/getting-started
+plans:
+- id: wakeo-enterprise
+  name: Enterprise (Contact Sales)
+  type: enterprise
+  description: >-
+    Custom, contract-based subscription covering platform access and the API.
+    Scoped to tracked shipment volume, transport modes, and selected modules,
+    with onboarding, support, and SLAs negotiated per customer. API credentials
+    and documentation access are provisioned by Wakeo Customer Success.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Multimodal Track and Trace
+  - name: Predictive ETAs
+  - name: API and Webhooks Access
+  - name: Intelligent Analytics
+  - name: Carbon Footprint Calculator
+  - name: Customer Success and SLAs
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

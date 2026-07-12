@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Wakeo Visibility API (Modeled)",
+    "description": "Multimodal supply-chain visibility API for Wakeo (sea, air, road, rail, parcel). Base host https://api.wakeo.co is confirmed live (AWS API Gateway) and authentication is OAuth 2.0 Bearer. The resource paths and bodies in this collection are MODELED from Wakeo's public capability descriptions because the API reference at https://docs.wakeo.co is password-protected. Reconcile before use.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{accessToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.wakeo.co", "type": "string" },
+    { "key": "accessToken", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Shipments",
+      "item": [
+        {
+          "name": "List shipments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/shipments?limit=50", "host": ["{{baseUrl}}"], "path": ["v1", "shipments"], "query": [{ "key": "limit", "value": "50" }] },
+            "description": "Lists tracked shipments for the account. MODELED."
+          }
+        },
+        {
+          "name": "Create a shipment (transport order)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"reference\": \"PO-12345\",\n  \"mode\": \"sea\",\n  \"carrier\": \"MAEU\",\n  \"containerNumber\": \"MSKU1234567\",\n  \"origin\": \"CNSHA\",\n  \"destination\": \"FRLEH\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/shipments", "host": ["{{baseUrl}}"], "path": ["v1", "shipments"] },
+            "description": "Registers a new transport order for Wakeo to track. MODELED."
+          }
+        },
+        {
+          "name": "Get a shipment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/shipments/:shipmentId", "host": ["{{baseUrl}}"], "path": ["v1", "shipments", ":shipmentId"], "variable": [{ "key": "shipmentId", "value": "" }] },
+            "description": "Retrieves a single shipment by its identifier. MODELED."
+          }
+        },
+        {
+          "name": "Stop tracking a shipment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/shipments/:shipmentId", "host": ["{{baseUrl}}"], "path": ["v1", "shipments", ":shipmentId"], "variable": [{ "key": "shipmentId", "value": "" }] },
+            "description": "Removes a shipment from active tracking. MODELED."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tracking",
+      "item": [
+        {
+          "name": "Get predictive ETA",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/shipments/:shipmentId/eta", "host": ["{{baseUrl}}"], "path": ["v1", "shipments", ":shipmentId", "eta"], "variable": [{ "key": "shipmentId", "value": "" }] },
+            "description": "Returns Wakeo's predictive door-to-door ETA for the shipment. MODELED."
+          }
+        },
+        {
+          "name": "List positions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/shipments/:shipmentId/positions", "host": ["{{baseUrl}}"], "path": ["v1", "shipments", ":shipmentId", "positions"], "variable": [{ "key": "shipmentId", "value": "" }] },
+            "description": "Returns the geolocation positions recorded along the journey. MODELED."
+          }
+        },
+        {
+          "name": "List milestone events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/shipments/:shipmentId/events", "host": ["{{baseUrl}}"], "path": ["v1", "shipments", ":shipmentId", "events"], "variable": [{ "key": "shipmentId", "value": "" }] },
+            "description": "Returns milestone events (departures, arrivals, port calls, transshipments, PODs, congestion, disruptions). MODELED."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "List webhook subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/webhooks", "host": ["{{baseUrl}}"], "path": ["v1", "webhooks"] },
+            "description": "Lists the webhook subscriptions for the account. MODELED."
+          }
+        },
+        {
+          "name": "Create a webhook subscription",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"url\": \"https://example.com/wakeo-webhook\",\n  \"events\": [\"eta.updated\", \"event.created\"],\n  \"secret\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/webhooks", "host": ["{{baseUrl}}"], "path": ["v1", "webhooks"] },
+            "description": "Subscribes a customer endpoint to tracking and ETA update events. MODELED."
+          }
+        },
+        {
+          "name": "Delete a webhook subscription",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/webhooks/:webhookId", "host": ["{{baseUrl}}"], "path": ["v1", "webhooks", ":webhookId"], "variable": [{ "key": "webhookId", "value": "" }] },
+            "description": "Removes a webhook subscription. MODELED."
+          }
+        }
+      ]
+    }
+  ]
+}

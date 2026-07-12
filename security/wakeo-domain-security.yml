@@ -1,0 +1,54 @@
+generated: '2026-07-12'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + API/docs hosts
+hosts:
+- host: wakeo.co
+  https: true
+  tls_version: TLSv1.3
+  cert_issuer: Let's Encrypt
+  cert_expires: Sep 23 11:09:53 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  server: Netlify
+- host: api.wakeo.co
+  https: true
+  tls_version: TLSv1.3
+  cert_issuer: Amazon
+  cert_expires: Jan 25 23:59:59 2027 GMT
+  hsts: false
+  server: AWS API Gateway
+  note: Live production API host. Returns HTTP 403 ForbiddenException (application/json) for unauthenticated requests.
+- host: docs.wakeo.co
+  https: true
+  tls_version: TLSv1.3
+  cert_issuer: Google Trust Services
+  cert_expires: Oct  9 14:44:17 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  server: cloudflare
+  note: Password-protected documentation portal. 302-redirects to /password.
+- host: app.wakeo.co
+  https: true
+  tls_version: TLSv1.3
+  cert_issuer: Amazon
+  cert_expires: Sep 24 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  server: AmazonS3
+  note: Web application (S3-hosted SPA).
+domains:
+- domain: wakeo.co
+  dnssec: false
+  caa: []
+  spf: true
+  spf_record: "v=spf1 include:spf.mailjet.com include:_spf.google.com include:mail.zendesk.com include:spf.protection.outlook.com include:26048058.spf06.hubspotemail.net ~all"
+  dmarc: true
+  dmarc_policy: quarantine
+  dmarc_rua: "mailto:dmarc@wakeo.co"
+notes: >-
+  All probed Wakeo hosts serve TLS 1.3. The marketing site (wakeo.co) runs on
+  Netlify, the API (api.wakeo.co) on AWS API Gateway, the docs portal
+  (docs.wakeo.co) behind Cloudflare with a password wall, and the app
+  (app.wakeo.co) on Amazon S3. HSTS is present on wakeo.co, docs.wakeo.co, and
+  app.wakeo.co but was not observed on the api.wakeo.co responses. SPF and DMARC
+  (p=quarantine) are configured; DNSSEC was not observed on wakeo.co.

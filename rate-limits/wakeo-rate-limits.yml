@@ -1,0 +1,52 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Wakeo
+providerId: wakeo
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Supply Chain
+- Transportation Visibility
+- Logistics
+- Rate Limiting
+- Quotas
+description: >-
+  Wakeo does not publish numeric API rate limits; the API reference is
+  password-protected. The production API at https://api.wakeo.co is fronted by
+  AWS API Gateway (confirmed by live probe returning HTTP 403 ForbiddenException
+  without a token), so per-key throttling and burst limits are technically
+  possible and likely configured, but no specific request-per-second or daily
+  quota figures are documented publicly. Practical throughput is more likely
+  governed by the customer's contracted shipment volume than by a published
+  per-minute request cap.
+notes: >-
+  Numeric per-account or per-endpoint limits are not documented as of the review
+  date. Confirm any throttling, burst, and quota values with Wakeo Customer
+  Success or in the password-protected reference during reconciliation.
+sources:
+- https://docs.wakeo.co/docs/getting-started
+- https://api.wakeo.co
+responseCodes:
+  throttled: 429
+  forbidden: 403
+limits:
+- name: API Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented. AWS API Gateway fronting suggests per-key throttling may apply.
+- name: Tracked Shipment Volume
+  scope: account
+  metric: shipments
+  limit: per contract
+  notes: Effective usage is bounded by the customer's contracted shipment/transport-mode volume rather than a per-minute request cap.
+policies:
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+- name: Authentication Required
+  description: Unauthenticated requests are rejected by AWS API Gateway with HTTP 403 ForbiddenException before any rate-limit accounting.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

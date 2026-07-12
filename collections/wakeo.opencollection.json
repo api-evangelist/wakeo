@@ -1,0 +1,140 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wakeo Visibility API (Modeled)",
+    "version": "1.0-modeled"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{accessToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shipments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List shipments.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wakeo.co/v1/shipments?limit=50",
+            "params": [
+              { "name": "limit", "value": "50", "type": "query", "description": "Maximum number of shipments to return." }
+            ]
+          },
+          "docs": "Lists tracked shipments for the account. MODELED - base host and OAuth 2.0 Bearer auth confirmed; path reconstructed."
+        },
+        {
+          "info": { "name": "Create a shipment (transport order).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wakeo.co/v1/shipments",
+            "body": { "type": "json", "data": "{\n  \"reference\": \"PO-12345\",\n  \"mode\": \"sea\",\n  \"carrier\": \"MAEU\",\n  \"containerNumber\": \"MSKU1234567\",\n  \"origin\": \"CNSHA\",\n  \"destination\": \"FRLEH\"\n}" }
+          },
+          "docs": "Registers a new transport order for Wakeo to track. MODELED."
+        },
+        {
+          "info": { "name": "Get a shipment.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wakeo.co/v1/shipments/:shipmentId",
+            "params": [
+              { "name": "shipmentId", "value": "", "type": "path", "description": "The identifier of the shipment." }
+            ]
+          },
+          "docs": "Retrieves a single shipment by its identifier. MODELED."
+        },
+        {
+          "info": { "name": "Stop tracking a shipment.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.wakeo.co/v1/shipments/:shipmentId",
+            "params": [
+              { "name": "shipmentId", "value": "", "type": "path", "description": "The identifier of the shipment." }
+            ]
+          },
+          "docs": "Removes a shipment from active tracking. MODELED."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tracking",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "Get predictive ETA.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wakeo.co/v1/shipments/:shipmentId/eta",
+            "params": [
+              { "name": "shipmentId", "value": "", "type": "path", "description": "The identifier of the shipment." }
+            ]
+          },
+          "docs": "Returns Wakeo's predictive door-to-door ETA for the shipment. MODELED."
+        },
+        {
+          "info": { "name": "List positions.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wakeo.co/v1/shipments/:shipmentId/positions",
+            "params": [
+              { "name": "shipmentId", "value": "", "type": "path", "description": "The identifier of the shipment." }
+            ]
+          },
+          "docs": "Returns the geolocation positions recorded along the journey. MODELED."
+        },
+        {
+          "info": { "name": "List milestone events.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wakeo.co/v1/shipments/:shipmentId/events",
+            "params": [
+              { "name": "shipmentId", "value": "", "type": "path", "description": "The identifier of the shipment." }
+            ]
+          },
+          "docs": "Returns milestone events (departures, arrivals, port calls, transshipments, PODs, congestion, disruptions). MODELED."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List webhook subscriptions.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.wakeo.co/v1/webhooks" },
+          "docs": "Lists the webhook subscriptions for the account. MODELED."
+        },
+        {
+          "info": { "name": "Create a webhook subscription.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wakeo.co/v1/webhooks",
+            "body": { "type": "json", "data": "{\n  \"url\": \"https://example.com/wakeo-webhook\",\n  \"events\": [\"eta.updated\", \"event.created\"],\n  \"secret\": \"\"\n}" }
+          },
+          "docs": "Subscribes a customer endpoint to tracking and ETA update events. MODELED."
+        },
+        {
+          "info": { "name": "Delete a webhook subscription.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.wakeo.co/v1/webhooks/:webhookId",
+            "params": [
+              { "name": "webhookId", "value": "", "type": "path", "description": "The identifier of the webhook subscription." }
+            ]
+          },
+          "docs": "Removes a webhook subscription. MODELED."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

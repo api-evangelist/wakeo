@@ -1,0 +1,90 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Wakeo
+providerId: wakeo
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Supply Chain
+- Transportation Visibility
+- Multimodal
+- Logistics
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Wakeo spend. Wakeo is an enterprise, customer-provisioned
+  supply-chain visibility SaaS with no public rate card. Cost is a negotiated
+  subscription / contract, typically driven by tracked shipment volume,
+  transport modes (sea, air, road, rail, parcel), and selected platform modules
+  (Track and Trace, Analytics, Carbon Footprint, Trusted Routes), with API and
+  webhook access included in the commercial agreement. Because pricing is not
+  published, per-unit rates are not reconciled here.
+notes: >-
+  No public pricing exists; obtain the contract structure and any
+  volume/overage terms from Wakeo. The dominant cost driver is expected to be
+  the number of tracked shipments and enabled modules rather than raw API call
+  counts.
+sources:
+- https://wakeo.co/
+- https://wakeo.co/platform/overview/
+- https://docs.wakeo.co/docs/getting-started
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Wakeo
+serviceCategory: Supply Chain Visibility
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Annual
+  billingCurrency: EUR
+  chargeCategories:
+  - Purchase
+  - Usage
+focusColumns:
+  ServiceName: Wakeo Visibility Platform
+  ServiceCategory: Supply Chain Visibility
+  ProviderName: Wakeo
+  PublisherName: Wakeo
+  InvoiceIssuerName: Wakeo
+  BillingCurrency: EUR
+  ChargeCategory: Purchase
+  PricingCategory: Subscription
+meters:
+- name: tracked_shipments
+  description: Number of shipments / transport orders tracked, the expected primary cost driver.
+  unit: shipments
+  aggregation: sum
+  dimensions:
+  - account
+  - mode
+- name: platform_modules
+  description: Enabled platform modules (Track and Trace, Analytics, Carbon Footprint, Trusted Routes).
+  unit: modules
+  aggregation: max
+  dimensions:
+  - account
+- name: api_access
+  description: API and webhook access, included in the enterprise agreement rather than metered separately.
+  unit: subscription
+  aggregation: max
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Track shipment volume by transport mode and module against the contracted allowance.
+- name: Allocation
+  description: Map tracked shipments and API usage to internal business units or trade lanes.
+- name: Optimization
+  description: Enable only the modes and modules in active use; scope tracking to shipments that need predictive visibility.
+- name: Accountability
+  description: Assign an owner for the Wakeo contract and review shipment volume against contracted terms each renewal.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

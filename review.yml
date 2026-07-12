@@ -1,0 +1,107 @@
+aid: wakeo
+name: Wakeo
+review:
+  question: Does Wakeo expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-12'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Wakeo's public API surface is
+    request/response REST over HTTPS plus server-to-endpoint webhooks. No
+    WebSocket (wss://) or SSE transport is documented on Wakeo's own API, so
+    there is no server-push protocol to model. Webhooks are outbound HTTP POSTs
+    to a customer endpoint, not a WebSocket, and are represented in the OpenAPI
+    as REST subscription-management operations.
+findings:
+  summary: |
+    Wakeo does not publish a documented public WebSocket API. Wakeo is a
+    Paris-based multimodal supply-chain visibility SaaS (sea, air, road, rail,
+    parcel). Its public integration surface is REST over HTTPS at
+    https://api.wakeo.co plus outbound webhooks. Authentication is OAuth 2.0 -
+    every request carries `Authorization: Bearer <ACCESS_TOKEN>`. No realtime,
+    bidirectional, or streaming WebSocket (ws:// or wss://) endpoint is
+    documented anywhere in Wakeo's materials as of the review date.
+  accessModel: |
+    Wakeo is an enterprise, customer-provisioned API. The API reference at
+    https://docs.wakeo.co/docs/getting-started is password-protected (the host
+    302-redirects unauthenticated visitors to /password, confirmed by live
+    probe on 2026-07-12). Access is granted by a Wakeo Customer Success
+    representative or via support@wakeo.co. There is no self-serve signup and no
+    public pricing.
+  webSocketPrecision: |
+    WebSocket PRECISION is false. No wss:// endpoint is documented. The API is
+    REST request/response plus outbound webhooks; both are HTTP, neither is a
+    WebSocket. Setting the WebSocket answer to true would require a real,
+    documented wss:// endpoint, which does not exist here.
+  confirmedVsModeled: |
+    CONFIRMED (live probe / published docs, 2026-07-12):
+      - Base host https://api.wakeo.co is live and fronted by AWS API Gateway;
+        unauthenticated requests return HTTP 403 ForbiddenException.
+      - Authentication is OAuth 2.0 Bearer (Authorization: Bearer <token>).
+      - The documented transport is REST over HTTPS plus webhooks; no WebSocket.
+      - The docs portal https://docs.wakeo.co/docs/getting-started exists and is
+        password-protected.
+    MODELED (reconstructed, not confirmed - reference is password-walled):
+      - Exact resource paths, any version prefix, query parameters.
+      - Request/response schemas.
+      - The OAuth token URL and grant type.
+      Each modeled path in openapi/wakeo-openapi.yml carries x-wakeo-modeled: true.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.wakeo.co
+      documented: true
+      note: Confirmed live (AWS API Gateway, 403 ForbiddenException without auth). Resource paths modeled.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Outbound HTTP POSTs to a customer endpoint (push ETAs/tracking into TMS/ERP/MRP). Not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in any Wakeo material as of the review date.
+  endpointsConfirmedRest:
+    - Base host https://api.wakeo.co confirmed live (AWS API Gateway); no individual paths are publicly confirmed because the reference is password-protected.
+  endpointsModeled:
+    - GET    https://api.wakeo.co/v1/shipments
+    - POST   https://api.wakeo.co/v1/shipments
+    - GET    https://api.wakeo.co/v1/shipments/{shipmentId}
+    - DELETE https://api.wakeo.co/v1/shipments/{shipmentId}
+    - GET    https://api.wakeo.co/v1/shipments/{shipmentId}/eta
+    - GET    https://api.wakeo.co/v1/shipments/{shipmentId}/positions
+    - GET    https://api.wakeo.co/v1/shipments/{shipmentId}/events
+    - GET    https://api.wakeo.co/v1/webhooks
+    - POST   https://api.wakeo.co/v1/webhooks
+    - DELETE https://api.wakeo.co/v1/webhooks/{webhookId}
+sources:
+  - url: https://docs.wakeo.co/docs/getting-started
+    type: Documentation
+    note: Password-protected API reference (302 to /password). OAuth 2.0 Bearer auth per published excerpts. No WebSocket mentioned.
+  - url: https://api.wakeo.co
+    type: APIHost
+    note: Live production host, AWS API Gateway. Returns 403 ForbiddenException without a valid token.
+  - url: https://wakeo.co/
+    type: Website
+    note: Multimodal supply-chain visibility platform; predictive ETAs, tracking, disruption alerts, carbon footprint.
+  - url: https://wakeo.co/blog/reliability-and-interoperability-to-boost-existing-systems-with-real-time-visibility/
+    type: Blog
+    note: Describes APIs pulling transport orders and pushing dynamic ETAs into TMS/ERP/MRP.
+  - url: https://wakeo.co/news/2025-q3-product-update/
+    type: Blog
+    note: Announces the new API documentation portal at docs.wakeo.co with tutorials and a "Try it" console; password-protected.
+  - url: https://www.linkedin.com/company/wakeo
+    type: LinkedIn
+    note: Confirms Wakeo is the Paris-based supply-chain visibility company.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists, and no AsyncAPI document was created
+    because there is no server-push transport (WebSocket or SSE) on Wakeo's own
+    API to model - the streaming-like behavior is delivered via outbound
+    webhooks, which are modeled as REST subscription operations in the OpenAPI.
+    The entry was built as an honest model: the base host and OAuth 2.0 Bearer
+    authentication are confirmed live, while resource paths and schemas are
+    reconstructed and explicitly flagged (x-wakeo-modeled: true) because the API
+    reference is behind a password wall.

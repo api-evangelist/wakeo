@@ -1,0 +1,121 @@
+aid: wakeo
+url: https://raw.githubusercontent.com/api-evangelist/wakeo/refs/heads/main/apis.yml
+name: Wakeo
+kind: company
+description: >-
+  Wakeo is a Paris-based SaaS platform for real-time multimodal supply-chain
+  visibility across sea, air, road, rail, and parcel. It combines carrier,
+  telematics, and AIS tracking data with data-science predictions to deliver
+  predictive door-to-door ETAs, milestone events, congestion and disruption
+  alerts, carbon-footprint reporting, and route reliability scoring. Wakeo's
+  REST API and webhooks let customers pull transport orders and push enriched
+  ETAs and tracking updates into a TMS, ERP, or MRP. The API is enterprise and
+  customer-provisioned - the reference at docs.wakeo.co is behind a password
+  wall and access is granted by Wakeo Customer Success or support@wakeo.co.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Supply Chain
+- Transportation Visibility
+- Real-Time Visibility
+- Multimodal
+- Logistics
+- Shipment Tracking
+- ETA
+- Freight
+- Supply Chain Visibility
+- SaaS
+created: '2026-07-12'
+modified: '2026-07-12'
+specificationVersion: '0.19'
+apis:
+- aid: wakeo:wakeo-shipments-api
+  name: Wakeo Shipments API
+  tags:
+  - Shipments
+  - Transport Orders
+  - Multimodal
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.wakeo.co/docs/getting-started
+  baseURL: https://api.wakeo.co
+  properties:
+  - url: https://docs.wakeo.co/docs/getting-started
+    type: Documentation
+  - url: openapi/wakeo-openapi.yml
+    type: OpenAPI
+  - url: collections/wakeo.postman_collection.json
+    type: PostmanCollection
+  - url: collections/wakeo.opencollection.json
+    type: OpenCollection
+  description: >-
+    Register and manage tracked shipments / transport orders across sea, air,
+    road, rail, and parcel, and pull the latest transport orders into Wakeo.
+    Base host https://api.wakeo.co is confirmed live (AWS API Gateway); the
+    resource paths are modeled from Wakeo's public capability descriptions
+    because the API reference is password-protected.
+- aid: wakeo:wakeo-tracking-api
+  name: Wakeo Tracking API
+  tags:
+  - Tracking
+  - ETA
+  - Real-Time Visibility
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.wakeo.co/docs/getting-started
+  baseURL: https://api.wakeo.co
+  properties:
+  - url: https://docs.wakeo.co/docs/getting-started
+    type: Documentation
+  - url: openapi/wakeo-openapi.yml
+    type: OpenAPI
+  - url: collections/wakeo.postman_collection.json
+    type: PostmanCollection
+  - url: collections/wakeo.opencollection.json
+    type: OpenCollection
+  description: >-
+    Retrieve predictive door-to-door ETAs, geolocation positions, and milestone
+    events (departures, arrivals, port calls, transshipments, PODs, congestion
+    and disruption alerts) for a tracked shipment. Endpoint paths are modeled;
+    base host and OAuth 2.0 Bearer authentication are confirmed.
+- aid: wakeo:wakeo-webhooks-api
+  name: Wakeo Webhooks API
+  tags:
+  - Webhooks
+  - Push Notifications
+  - Integration
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.wakeo.co/docs/getting-started
+  baseURL: https://api.wakeo.co
+  properties:
+  - url: https://docs.wakeo.co/docs/getting-started
+    type: Documentation
+  - url: openapi/wakeo-openapi.yml
+    type: OpenAPI
+  - url: collections/wakeo.postman_collection.json
+    type: PostmanCollection
+  - url: collections/wakeo.opencollection.json
+    type: OpenCollection
+  description: >-
+    Subscribe customer endpoints to shipment tracking and ETA update events so
+    Wakeo can push enriched data into a TMS, ERP, or MRP. Server-to-endpoint
+    HTTPS webhooks, not WebSocket. Subscription paths are modeled.
+common:
+- type: DomainSecurity
+  url: security/wakeo-domain-security.yml
+- type: Authentication
+  url: authentication/wakeo-authentication.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/wakeo
+- type: Website
+  url: https://wakeo.co
+- type: Documentation
+  url: https://docs.wakeo.co/docs/getting-started
+- type: Plans
+  url: plans/wakeo-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/wakeo-rate-limits.yml
+- type: FinOps
+  url: finops/wakeo-finops.yml
+- type: Blog
+  url: https://wakeo.co/blog/
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

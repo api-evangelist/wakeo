@@ -1,0 +1,29 @@
+generated: '2026-07-12'
+method: documented
+source: https://docs.wakeo.co/docs/getting-started
+summary:
+  types:
+  - oauth2
+schemes:
+- name: oauth2
+  type: oauth2
+  scheme: bearer
+  description: >-
+    All Wakeo API endpoints are secured with an OAuth 2.0 access token. Every
+    request must include the Authorization header with a valid bearer token:
+    `Authorization: Bearer <ACCESS_TOKEN>`. This is confirmed from Wakeo's
+    published documentation and by live probe of https://api.wakeo.co, which is
+    fronted by AWS API Gateway and returns HTTP 403 ForbiddenException for
+    unauthenticated requests. The token endpoint, grant type, and scopes are not
+    publicly documented (the reference is password-protected) and are modeled in
+    the OpenAPI; obtain credentials from Wakeo Customer Success or
+    support@wakeo.co.
+  confirmed: true
+  sources:
+  - https://docs.wakeo.co/docs/getting-started
+  - https://api.wakeo.co
+notes: >-
+  Wakeo is an enterprise, customer-provisioned platform. Credentials are issued
+  to customers - there is no self-serve API key signup. The OAuth token URL and
+  grant type shown in openapi/wakeo-openapi.yml are modeled and must be
+  reconciled against the password-protected reference.
