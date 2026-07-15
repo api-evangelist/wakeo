@@ -98,6 +98,8 @@ apis:
     Wakeo can push enriched data into a TMS, ERP, or MRP. Server-to-endpoint
     HTTPS webhooks, not WebSocket. Subscription paths are modeled.
 common:
+- type: AgenticAccess
+  url: agentic-access/wakeo-agentic-access.yml
 - type: DomainSecurity
   url: security/wakeo-domain-security.yml
 - type: Authentication
