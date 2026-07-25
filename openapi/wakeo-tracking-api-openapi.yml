@@ -1,0 +1,181 @@
+openapi: 3.0.3
+info:
+  title: Wakeo Visibility Shipments Tracking API
+  description: "REST API for Wakeo, a multimodal supply-chain visibility platform (sea, air, road, rail, and parcel). The API lets customers register transport orders / shipments, retrieve predictive ETAs, positions, and milestone events, and subscribe to webhooks that push tracking updates back into a TMS, ERP, or MRP. Wakeo describes its APIs as able to \"pull the latest transport orders and push the latest ETA\" into shipper systems.\n\nACCESS MODEL: Wakeo is an enterprise, customer-provisioned SaaS. The API reference is published at https://docs.wakeo.co/docs/getting-started behind a password wall; access is granted by a Customer Success representative or via support@wakeo.co. As a result this document is a HONEST MODEL, not a byte-for-byte copy of Wakeo's private reference.\n\nWHAT IS CONFIRMED (2026-07-12):\n  * Base host https://api.wakeo.co is LIVE and fronted by AWS API Gateway\n    (unauthenticated requests return HTTP 403 ForbiddenException).\n  * Authentication is OAuth 2.0 - every request carries\n    `Authorization: Bearer <ACCESS_TOKEN>` (per Wakeo's published docs).\n  * The public surface is request/response REST over HTTPS plus webhooks;\n    no WebSocket (wss://) endpoint is documented.\n\n\nWHAT IS MODELED (unconfirmed, marked x-wakeo-modeled: true on each path):\n  * The exact resource paths, path prefix/version, query parameters, and\n    request/response schemas below are reconstructed from Wakeo's public\n    capability descriptions (shipment tracking, ETA, positions, events,\n    webhooks). They must be reconciled against the password-protected\n    reference before use."
+  version: 1.0-modeled
+  contact:
+    name: Wakeo Support
+    url: https://wakeo.co
+    email: support@wakeo.co
+  x-api-evangelist-status:
+    baseHost: confirmed
+    authentication: confirmed
+    endpointPaths: modeled
+    schemas: modeled
+    reviewer: API Evangelist
+    reviewed: '2026-07-12'
+servers:
+- url: https://api.wakeo.co
+  description: Wakeo production API (confirmed live, AWS API Gateway). The path structure below, including any version prefix, is modeled and unconfirmed.
+security:
+- oauth2: []
+tags:
+- name: Tracking
+  description: Predictive ETAs, positions, and milestone events for a tracked shipment. (Modeled.)
+paths:
+  /v1/shipments/{shipmentId}/eta:
+    x-wakeo-modeled: true
+    parameters:
+    - $ref: '#/components/parameters/ShipmentId'
+    get:
+      operationId: getShipmentEta
+      tags:
+      - Tracking
+      summary: Get predictive ETA
+      description: Returns Wakeo's predictive door-to-door ETA for the shipment, blending tracking data with data-science predictions. MODELED.
+      responses:
+        '200':
+          description: The current predictive ETA.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Eta'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/shipments/{shipmentId}/positions:
+    x-wakeo-modeled: true
+    parameters:
+    - $ref: '#/components/parameters/ShipmentId'
+    get:
+      operationId: listShipmentPositions
+      tags:
+      - Tracking
+      summary: List positions
+      description: Returns the geolocation positions recorded for the shipment along its journey. MODELED.
+      responses:
+        '200':
+          description: A list of positions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Position'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/shipments/{shipmentId}/events:
+    x-wakeo-modeled: true
+    parameters:
+    - $ref: '#/components/parameters/ShipmentId'
+    get:
+      operationId: listShipmentEvents
+      tags:
+      - Tracking
+      summary: List milestone events
+      description: Returns the milestone events (departures, arrivals, port calls, transshipments, PODs, congestion and disruption alerts) for a shipment. MODELED.
+      responses:
+        '200':
+          description: A list of milestone events.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Position:
+      type: object
+      description: Modeled geolocation position.
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        timestamp:
+          type: string
+          format: date-time
+        source:
+          type: string
+          description: Data source (AIS, telematics, carrier, etc.).
+    Event:
+      type: object
+      description: Modeled milestone / disruption event.
+      properties:
+        type:
+          type: string
+          description: Event type (departure, arrival, port_call, transshipment, pod, congestion, disruption).
+        location:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        description:
+          type: string
+    Eta:
+      type: object
+      description: Modeled predictive ETA payload.
+      properties:
+        shipmentId:
+          type: string
+        estimatedArrival:
+          type: string
+          format: date-time
+        confidence:
+          type: string
+          description: Qualitative or numeric confidence in the prediction.
+        updatedAt:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    ShipmentId:
+      name: shipmentId
+      in: path
+      required: true
+      description: The identifier of the shipment.
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: 'OAuth 2.0. Every request must include `Authorization: Bearer <ACCESS_TOKEN>` (confirmed from Wakeo''s published documentation). The token URL and grant type below are MODELED and must be confirmed against the password-protected reference.'
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.wakeo.co/oauth/token
+          scopes: {}

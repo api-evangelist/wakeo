@@ -1,0 +1,222 @@
+openapi: 3.0.3
+info:
+  title: Wakeo Visibility Shipments API
+  description: "REST API for Wakeo, a multimodal supply-chain visibility platform (sea, air, road, rail, and parcel). The API lets customers register transport orders / shipments, retrieve predictive ETAs, positions, and milestone events, and subscribe to webhooks that push tracking updates back into a TMS, ERP, or MRP. Wakeo describes its APIs as able to \"pull the latest transport orders and push the latest ETA\" into shipper systems.\n\nACCESS MODEL: Wakeo is an enterprise, customer-provisioned SaaS. The API reference is published at https://docs.wakeo.co/docs/getting-started behind a password wall; access is granted by a Customer Success representative or via support@wakeo.co. As a result this document is a HONEST MODEL, not a byte-for-byte copy of Wakeo's private reference.\n\nWHAT IS CONFIRMED (2026-07-12):\n  * Base host https://api.wakeo.co is LIVE and fronted by AWS API Gateway\n    (unauthenticated requests return HTTP 403 ForbiddenException).\n  * Authentication is OAuth 2.0 - every request carries\n    `Authorization: Bearer <ACCESS_TOKEN>` (per Wakeo's published docs).\n  * The public surface is request/response REST over HTTPS plus webhooks;\n    no WebSocket (wss://) endpoint is documented.\n\n\nWHAT IS MODELED (unconfirmed, marked x-wakeo-modeled: true on each path):\n  * The exact resource paths, path prefix/version, query parameters, and\n    request/response schemas below are reconstructed from Wakeo's public\n    capability descriptions (shipment tracking, ETA, positions, events,\n    webhooks). They must be reconciled against the password-protected\n    reference before use."
+  version: 1.0-modeled
+  contact:
+    name: Wakeo Support
+    url: https://wakeo.co
+    email: support@wakeo.co
+  x-api-evangelist-status:
+    baseHost: confirmed
+    authentication: confirmed
+    endpointPaths: modeled
+    schemas: modeled
+    reviewer: API Evangelist
+    reviewed: '2026-07-12'
+servers:
+- url: https://api.wakeo.co
+  description: Wakeo production API (confirmed live, AWS API Gateway). The path structure below, including any version prefix, is modeled and unconfirmed.
+security:
+- oauth2: []
+tags:
+- name: Shipments
+  description: Register and manage tracked shipments / transport orders across sea, air, road, rail, and parcel. (Modeled.)
+paths:
+  /v1/shipments:
+    x-wakeo-modeled: true
+    get:
+      operationId: listShipments
+      tags:
+      - Shipments
+      summary: List shipments
+      description: Lists tracked shipments for the authenticated account. MODELED - query parameters and response shape are reconstructed, not confirmed.
+      parameters:
+      - name: status
+        in: query
+        required: false
+        description: Filter by shipment status (e.g. in_transit, delivered).
+        schema:
+          type: string
+      - name: mode
+        in: query
+        required: false
+        description: Filter by transport mode (sea, air, road, rail, parcel).
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: A page of shipments.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shipment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      operationId: createShipment
+      tags:
+      - Shipments
+      summary: Create a shipment (transport order)
+      description: Registers a new transport order for Wakeo to track and predict. MODELED - request body reconstructed from documented capabilities.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShipmentInput'
+      responses:
+        '201':
+          description: The created shipment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shipment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/shipments/{shipmentId}:
+    x-wakeo-modeled: true
+    parameters:
+    - $ref: '#/components/parameters/ShipmentId'
+    get:
+      operationId: getShipment
+      tags:
+      - Shipments
+      summary: Get a shipment
+      description: Retrieves a single shipment by its identifier. MODELED.
+      responses:
+        '200':
+          description: The requested shipment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shipment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteShipment
+      tags:
+      - Shipments
+      summary: Stop tracking a shipment
+      description: Removes a shipment from active tracking. MODELED.
+      responses:
+        '204':
+          description: The shipment tracking was stopped.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    ShipmentInput:
+      type: object
+      description: Modeled transport-order input. Fields reconstructed, not confirmed.
+      required:
+      - mode
+      properties:
+        reference:
+          type: string
+          description: Customer transport-order or shipment reference.
+        mode:
+          type: string
+          description: Transport mode.
+          enum:
+          - sea
+          - air
+          - road
+          - rail
+          - parcel
+        carrier:
+          type: string
+          description: Carrier, shipping line, or NVOCC identifier.
+        trackingNumber:
+          type: string
+          description: Container number, AWB, booking, or parcel tracking number.
+        origin:
+          type: string
+          description: Origin location (UN/LOCODE, port, or address).
+        destination:
+          type: string
+          description: Destination location (UN/LOCODE, port, or address).
+        containerNumber:
+          type: string
+    Shipment:
+      allOf:
+      - $ref: '#/components/schemas/ShipmentInput'
+      - type: object
+        properties:
+          id:
+            type: string
+          status:
+            type: string
+            description: Lifecycle status (e.g. in_transit, delivered).
+          createdAt:
+            type: string
+            format: date-time
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: The request was rejected (AWS API Gateway returns 403 ForbiddenException for unauthenticated or unauthorized calls).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    ShipmentId:
+      name: shipmentId
+      in: path
+      required: true
+      description: The identifier of the shipment.
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: 'OAuth 2.0. Every request must include `Authorization: Bearer <ACCESS_TOKEN>` (confirmed from Wakeo''s published documentation). The token URL and grant type below are MODELED and must be confirmed against the password-protected reference.'
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.wakeo.co/oauth/token
+          scopes: {}

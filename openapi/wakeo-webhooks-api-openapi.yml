@@ -1,0 +1,156 @@
+openapi: 3.0.3
+info:
+  title: Wakeo Visibility Shipments Webhooks API
+  description: "REST API for Wakeo, a multimodal supply-chain visibility platform (sea, air, road, rail, and parcel). The API lets customers register transport orders / shipments, retrieve predictive ETAs, positions, and milestone events, and subscribe to webhooks that push tracking updates back into a TMS, ERP, or MRP. Wakeo describes its APIs as able to \"pull the latest transport orders and push the latest ETA\" into shipper systems.\n\nACCESS MODEL: Wakeo is an enterprise, customer-provisioned SaaS. The API reference is published at https://docs.wakeo.co/docs/getting-started behind a password wall; access is granted by a Customer Success representative or via support@wakeo.co. As a result this document is a HONEST MODEL, not a byte-for-byte copy of Wakeo's private reference.\n\nWHAT IS CONFIRMED (2026-07-12):\n  * Base host https://api.wakeo.co is LIVE and fronted by AWS API Gateway\n    (unauthenticated requests return HTTP 403 ForbiddenException).\n  * Authentication is OAuth 2.0 - every request carries\n    `Authorization: Bearer <ACCESS_TOKEN>` (per Wakeo's published docs).\n  * The public surface is request/response REST over HTTPS plus webhooks;\n    no WebSocket (wss://) endpoint is documented.\n\n\nWHAT IS MODELED (unconfirmed, marked x-wakeo-modeled: true on each path):\n  * The exact resource paths, path prefix/version, query parameters, and\n    request/response schemas below are reconstructed from Wakeo's public\n    capability descriptions (shipment tracking, ETA, positions, events,\n    webhooks). They must be reconciled against the password-protected\n    reference before use."
+  version: 1.0-modeled
+  contact:
+    name: Wakeo Support
+    url: https://wakeo.co
+    email: support@wakeo.co
+  x-api-evangelist-status:
+    baseHost: confirmed
+    authentication: confirmed
+    endpointPaths: modeled
+    schemas: modeled
+    reviewer: API Evangelist
+    reviewed: '2026-07-12'
+servers:
+- url: https://api.wakeo.co
+  description: Wakeo production API (confirmed live, AWS API Gateway). The path structure below, including any version prefix, is modeled and unconfirmed.
+security:
+- oauth2: []
+tags:
+- name: Webhooks
+  description: Subscriptions that push tracking and ETA updates to a customer endpoint. (Modeled.)
+paths:
+  /v1/webhooks:
+    x-wakeo-modeled: true
+    get:
+      operationId: listWebhooks
+      tags:
+      - Webhooks
+      summary: List webhook subscriptions
+      description: Lists the webhook subscriptions for the account. MODELED.
+      responses:
+        '200':
+          description: A list of webhook subscriptions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Webhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createWebhook
+      tags:
+      - Webhooks
+      summary: Create a webhook subscription
+      description: Subscribes a customer endpoint to shipment tracking and ETA update events, pushing enriched data into a TMS/ERP/MRP. MODELED.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookInput'
+      responses:
+        '201':
+          description: The created webhook subscription.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/webhooks/{webhookId}:
+    x-wakeo-modeled: true
+    parameters:
+    - name: webhookId
+      in: path
+      required: true
+      description: The identifier of the webhook subscription.
+      schema:
+        type: string
+    delete:
+      operationId: deleteWebhook
+      tags:
+      - Webhooks
+      summary: Delete a webhook subscription
+      description: Removes a webhook subscription. MODELED.
+      responses:
+        '204':
+          description: The webhook subscription was deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Webhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookInput'
+      - type: object
+        properties:
+          id:
+            type: string
+          createdAt:
+            type: string
+            format: date-time
+    WebhookInput:
+      type: object
+      description: Modeled webhook subscription input.
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          format: uri
+          description: HTTPS endpoint that Wakeo POSTs event payloads to.
+        events:
+          type: array
+          description: Event types to subscribe to (e.g. eta.updated, event.created).
+          items:
+            type: string
+        secret:
+          type: string
+          description: Shared secret used to sign webhook payloads.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: 'OAuth 2.0. Every request must include `Authorization: Bearer <ACCESS_TOKEN>` (confirmed from Wakeo''s published documentation). The token URL and grant type below are MODELED and must be confirmed against the password-protected reference.'
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.wakeo.co/oauth/token
+          scopes: {}
