@@ -12,7 +12,20 @@ description: >-
   ETAs and tracking updates into a TMS, ERP, or MRP. The API is enterprise and
   customer-provisioned - the reference at docs.wakeo.co is behind a password
   wall and access is granted by Wakeo Customer Success or support@wakeo.co.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: enterprise
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Enterprise · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/wakeo.png
 tags:
 - Supply Chain
 - Transportation Visibility
@@ -30,73 +43,54 @@ specificationVersion: '0.19'
 apis:
 - aid: wakeo:wakeo-shipments-api
   name: Wakeo Shipments API
+  description: >-
+    Register and manage tracked shipments / transport orders across sea, air, road, rail, and parcel.
+    (Modeled.)
+  humanURL: https://docs.wakeo.co/docs/getting-started
+  baseURL: https://api.wakeo.co
   tags:
   - Shipments
-  - Transport Orders
-  - Multimodal
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.wakeo.co/docs/getting-started
-  baseURL: https://api.wakeo.co
   properties:
-  - url: https://docs.wakeo.co/docs/getting-started
-    type: Documentation
-  - url: openapi/wakeo-openapi.yml
-    type: OpenAPI
-  - url: collections/wakeo.postman_collection.json
-    type: PostmanCollection
-  - url: collections/wakeo.opencollection.json
-    type: OpenCollection
-  description: >-
-    Register and manage tracked shipments / transport orders across sea, air,
-    road, rail, and parcel, and pull the latest transport orders into Wakeo.
-    Base host https://api.wakeo.co is confirmed live (AWS API Gateway); the
-    resource paths are modeled from Wakeo's public capability descriptions
-    because the API reference is password-protected.
+  - type: OpenAPI
+    url: openapi/wakeo-shipments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.wakeo.co/docs/getting-started
+  - type: PostmanCollection
+    url: collections/wakeo.postman_collection.json
+  - type: OpenCollection
+    url: collections/wakeo.opencollection.json
 - aid: wakeo:wakeo-tracking-api
   name: Wakeo Tracking API
+  description: Predictive ETAs, positions, and milestone events for a tracked shipment. (Modeled.)
+  humanURL: https://docs.wakeo.co/docs/getting-started
+  baseURL: https://api.wakeo.co
   tags:
   - Tracking
-  - ETA
-  - Real-Time Visibility
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.wakeo.co/docs/getting-started
-  baseURL: https://api.wakeo.co
   properties:
-  - url: https://docs.wakeo.co/docs/getting-started
-    type: Documentation
-  - url: openapi/wakeo-openapi.yml
-    type: OpenAPI
-  - url: collections/wakeo.postman_collection.json
-    type: PostmanCollection
-  - url: collections/wakeo.opencollection.json
-    type: OpenCollection
-  description: >-
-    Retrieve predictive door-to-door ETAs, geolocation positions, and milestone
-    events (departures, arrivals, port calls, transshipments, PODs, congestion
-    and disruption alerts) for a tracked shipment. Endpoint paths are modeled;
-    base host and OAuth 2.0 Bearer authentication are confirmed.
+  - type: OpenAPI
+    url: openapi/wakeo-tracking-api-openapi.yml
+  - type: Documentation
+    url: https://docs.wakeo.co/docs/getting-started
+  - type: PostmanCollection
+    url: collections/wakeo.postman_collection.json
+  - type: OpenCollection
+    url: collections/wakeo.opencollection.json
 - aid: wakeo:wakeo-webhooks-api
   name: Wakeo Webhooks API
-  tags:
-  - Webhooks
-  - Push Notifications
-  - Integration
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  description: Subscriptions that push tracking and ETA updates to a customer endpoint. (Modeled.)
   humanURL: https://docs.wakeo.co/docs/getting-started
   baseURL: https://api.wakeo.co
+  tags:
+  - Webhooks
   properties:
-  - url: https://docs.wakeo.co/docs/getting-started
-    type: Documentation
-  - url: openapi/wakeo-openapi.yml
-    type: OpenAPI
-  - url: collections/wakeo.postman_collection.json
-    type: PostmanCollection
-  - url: collections/wakeo.opencollection.json
-    type: OpenCollection
-  description: >-
-    Subscribe customer endpoints to shipment tracking and ETA update events so
-    Wakeo can push enriched data into a TMS, ERP, or MRP. Server-to-endpoint
-    HTTPS webhooks, not WebSocket. Subscription paths are modeled.
+  - type: OpenAPI
+    url: openapi/wakeo-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.wakeo.co/docs/getting-started
+  - type: PostmanCollection
+    url: collections/wakeo.postman_collection.json
+  - type: OpenCollection
+    url: collections/wakeo.opencollection.json
 common:
 - type: AgenticAccess
   url: agentic-access/wakeo-agentic-access.yml
