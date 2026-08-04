@@ -1,0 +1,18 @@
+{
+  "provider": "wakeo",
+  "sources": [
+    "wakeo-shipments-api-openapi.yml",
+    "wakeo-tracking-api-openapi.yml",
+    "wakeo-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "wakeo-shipments-api-openapi.yml",
+    "wakeo-tracking-api-openapi.yml",
+    "wakeo-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
