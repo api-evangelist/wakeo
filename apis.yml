@@ -30,6 +30,17 @@ tags:
 - Supply Chain
 - Transportation Visibility
 - Real-Time Visibility
+- Multi-Modal
+- Logistics
+- Shipment Tracking
+- ETA
+- Freight
+- Supply Chain Visibility
+- Software-as-a-Service
+tags_raw:
+- Supply Chain
+- Transportation Visibility
+- Real-Time Visibility
 - Multimodal
 - Logistics
 - Shipment Tracking
@@ -81,6 +92,8 @@ apis:
   humanURL: https://docs.wakeo.co/docs/getting-started
   baseURL: https://api.wakeo.co
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
