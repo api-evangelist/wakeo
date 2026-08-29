@@ -12,6 +12,18 @@ description: >-
   ETAs and tracking updates into a TMS, ERP, or MRP. The API is enterprise and
   customer-provisioned - the reference at docs.wakeo.co is behind a password
   wall and access is granted by Wakeo Customer Success or support@wakeo.co.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: enterprise
   onboarding: self-serve
