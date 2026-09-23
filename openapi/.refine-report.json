@@ -1,9 +1,7 @@
 {
   "provider": "wakeo",
   "sources": [
-    "wakeo-shipments-api-openapi.yml",
-    "wakeo-tracking-api-openapi.yml",
-    "wakeo-webhooks-api-openapi.yml"
+    "_original/wakeo-openapi.yml"
   ],
   "outputs": [
     "wakeo-shipments-api-openapi.yml",
@@ -13,6 +11,14 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "wakeo-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "wakeo-shipments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wakeo-tracking-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wakeo-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
