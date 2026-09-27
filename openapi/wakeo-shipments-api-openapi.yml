@@ -126,7 +126,45 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: The request was rejected (AWS API Gateway returns 403 ForbiddenException for unauthenticated or unauthorized calls).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Shipment:
+      allOf:
+      - $ref: '#/components/schemas/ShipmentInput'
+      - type: object
+        properties:
+          id:
+            type: string
+          status:
+            type: string
+            description: Lifecycle status (e.g. in_transit, delivered).
+          createdAt:
+            type: string
+            format: date-time
     ShipmentInput:
       type: object
       description: Modeled transport-order input. Fields reconstructed, not confirmed.
@@ -166,44 +204,6 @@ components:
           type: string
         code:
           type: string
-    Shipment:
-      allOf:
-      - $ref: '#/components/schemas/ShipmentInput'
-      - type: object
-        properties:
-          id:
-            type: string
-          status:
-            type: string
-            description: Lifecycle status (e.g. in_transit, delivered).
-          createdAt:
-            type: string
-            format: date-time
-  responses:
-    Forbidden:
-      description: The request was rejected (AWS API Gateway returns 403 ForbiddenException for unauthenticated or unauthorized calls).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid OAuth 2.0 access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     ShipmentId:
       name: shipmentId

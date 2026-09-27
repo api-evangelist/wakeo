@@ -102,6 +102,13 @@ components:
           createdAt:
             type: string
             format: date-time
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
     WebhookInput:
       type: object
       description: Modeled webhook subscription input.
@@ -120,22 +127,15 @@ components:
         secret:
           type: string
           description: Shared secret used to sign webhook payloads.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid OAuth 2.0 access token.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
       content:
         application/json:
           schema:
