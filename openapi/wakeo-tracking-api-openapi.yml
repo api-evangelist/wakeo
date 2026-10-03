@@ -97,7 +97,35 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Eta:
+      type: object
+      description: Modeled predictive ETA payload.
+      properties:
+        shipmentId:
+          type: string
+        estimatedArrival:
+          type: string
+          format: date-time
+        confidence:
+          type: string
+          description: Qualitative or numeric confidence in the prediction.
+        updatedAt:
+          type: string
+          format: date-time
     Event:
       type: object
       description: Modeled milestone / disruption event.
@@ -111,13 +139,6 @@ components:
           type: string
           format: date-time
         description:
-          type: string
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
           type: string
     Position:
       type: object
@@ -135,34 +156,13 @@ components:
         source:
           type: string
           description: Data source (AIS, telematics, carrier, etc.).
-    Eta:
+    Error:
       type: object
-      description: Modeled predictive ETA payload.
       properties:
-        shipmentId:
+        message:
           type: string
-        estimatedArrival:
+        code:
           type: string
-          format: date-time
-        confidence:
-          type: string
-          description: Qualitative or numeric confidence in the prediction.
-        updatedAt:
-          type: string
-          format: date-time
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid OAuth 2.0 access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     ShipmentId:
       name: shipmentId

@@ -127,6 +127,12 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -139,12 +145,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Forbidden:
       description: The request was rejected (AWS API Gateway returns 403 ForbiddenException for unauthenticated or unauthorized calls).
       content:
@@ -152,19 +152,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Shipment:
-      allOf:
-      - $ref: '#/components/schemas/ShipmentInput'
-      - type: object
-        properties:
-          id:
-            type: string
-          status:
-            type: string
-            description: Lifecycle status (e.g. in_transit, delivered).
-          createdAt:
-            type: string
-            format: date-time
     ShipmentInput:
       type: object
       description: Modeled transport-order input. Fields reconstructed, not confirmed.
@@ -197,6 +184,19 @@ components:
           description: Destination location (UN/LOCODE, port, or address).
         containerNumber:
           type: string
+    Shipment:
+      allOf:
+      - $ref: '#/components/schemas/ShipmentInput'
+      - type: object
+        properties:
+          id:
+            type: string
+          status:
+            type: string
+            description: Lifecycle status (e.g. in_transit, delivered).
+          createdAt:
+            type: string
+            format: date-time
     Error:
       type: object
       properties:

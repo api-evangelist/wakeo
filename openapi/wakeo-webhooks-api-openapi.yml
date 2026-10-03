@@ -91,24 +91,26 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Webhook:
-      allOf:
-      - $ref: '#/components/schemas/WebhookInput'
-      - type: object
-        properties:
-          id:
-            type: string
-          createdAt:
-            type: string
-            format: date-time
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: string
     WebhookInput:
       type: object
       description: Modeled webhook subscription input.
@@ -127,25 +129,23 @@ components:
         secret:
           type: string
           description: Shared secret used to sign webhook payloads.
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid OAuth 2.0 access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Webhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookInput'
+      - type: object
+        properties:
+          id:
+            type: string
+          createdAt:
+            type: string
+            format: date-time
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
   securitySchemes:
     oauth2:
       type: oauth2
