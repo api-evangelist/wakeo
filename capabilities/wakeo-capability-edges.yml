@@ -1,0 +1,37 @@
+slug: wakeo
+provider: Wakeo
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Shipments
+  spec_file: wakeo-shipments-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.82
+  evidence: POST /v1/shipments 'Create a shipment (transport order)'; DELETE /v1/shipments/{shipmentId}
+    'Stop tracking a shipment'
+  reason: Operations create and manage transport orders on a multimodal (sea, air, road, rail, parcel)
+    visibility platform, which is transport/logistics execution. Logistics Operations Management is the
+    closest fit; some overlap with order fulfilment keeps confidence below 0.9.
+- tag: Tracking
+  spec_file: wakeo-tracking-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.78
+  evidence: GET /v1/shipments/{shipmentId}/eta 'Get predictive ETA'; GET /v1/shipments/{shipmentId}/events
+    'List milestone events'
+  reason: The tag delivers in-transit visibility — predictive ETAs, positions and milestone events for
+    shipments — which is transport execution monitoring within logistics operations. Could also be argued
+    as supply chain risk/visibility, so confidence is moderate.

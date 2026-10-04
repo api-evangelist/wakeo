@@ -117,6 +117,9 @@ apis:
   - type: OpenCollection
     url: collections/wakeo.opencollection.json
 common:
+- type: CapabilityMap
+  url: capabilities/wakeo-capability-edges.yml
+  name: Wakeo Business Capability Map
 - type: AgenticAccess
   url: agentic-access/wakeo-agentic-access.yml
 - type: DomainSecurity
