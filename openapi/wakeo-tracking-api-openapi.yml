@@ -97,49 +97,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid OAuth 2.0 access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Eta:
-      type: object
-      description: Modeled predictive ETA payload.
-      properties:
-        shipmentId:
-          type: string
-        estimatedArrival:
-          type: string
-          format: date-time
-        confidence:
-          type: string
-          description: Qualitative or numeric confidence in the prediction.
-        updatedAt:
-          type: string
-          format: date-time
-    Event:
-      type: object
-      description: Modeled milestone / disruption event.
-      properties:
-        type:
-          type: string
-          description: Event type (departure, arrival, port_call, transshipment, pod, congestion, disruption).
-        location:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        description:
-          type: string
     Position:
       type: object
       description: Modeled geolocation position.
@@ -163,6 +121,48 @@ components:
           type: string
         code:
           type: string
+    Event:
+      type: object
+      description: Modeled milestone / disruption event.
+      properties:
+        type:
+          type: string
+          description: Event type (departure, arrival, port_call, transshipment, pod, congestion, disruption).
+        location:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        description:
+          type: string
+    Eta:
+      type: object
+      description: Modeled predictive ETA payload.
+      properties:
+        shipmentId:
+          type: string
+        estimatedArrival:
+          type: string
+          format: date-time
+        confidence:
+          type: string
+          description: Qualitative or numeric confidence in the prediction.
+        updatedAt:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     ShipmentId:
       name: shipmentId

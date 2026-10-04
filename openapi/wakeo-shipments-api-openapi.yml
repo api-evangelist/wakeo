@@ -139,19 +139,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid OAuth 2.0 access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Forbidden:
       description: The request was rejected (AWS API Gateway returns 403 ForbiddenException for unauthenticated or unauthorized calls).
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
     ShipmentInput:
       type: object
       description: Modeled transport-order input. Fields reconstructed, not confirmed.
@@ -197,13 +204,6 @@ components:
           createdAt:
             type: string
             format: date-time
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: string
   parameters:
     ShipmentId:
       name: shipmentId
