@@ -98,22 +98,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Position:
-      type: object
-      description: Modeled geolocation position.
-      properties:
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-        timestamp:
-          type: string
-          format: date-time
-        source:
-          type: string
-          description: Data source (AIS, telematics, carrier, etc.).
     Error:
       type: object
       properties:
@@ -135,6 +119,22 @@ components:
           format: date-time
         description:
           type: string
+    Position:
+      type: object
+      description: Modeled geolocation position.
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        timestamp:
+          type: string
+          format: date-time
+        source:
+          type: string
+          description: Data source (AIS, telematics, carrier, etc.).
     Eta:
       type: object
       description: Modeled predictive ETA payload.
@@ -150,19 +150,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-  responses:
-    Unauthorized:
-      description: Missing or invalid OAuth 2.0 access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     ShipmentId:
       name: shipmentId
@@ -171,6 +158,19 @@ components:
       description: The identifier of the shipment.
       schema:
         type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid OAuth 2.0 access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2:
       type: oauth2
