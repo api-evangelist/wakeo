@@ -1,4 +1,4 @@
-# Wakeo (wakeo)
+# Wakeo
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,124 +64,121 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Wakeo is a Paris-based SaaS platform for real-time multimodal supply-chain visibility across sea, air, road, rail, and parcel. It combines carrier, telematics, and AIS tracking data with data-science predictions to deliver predictive door-to-door ETAs, milestone events, congestion and disruption alerts, carbon-footprint reporting, and route reliability scoring. Wakeo's REST API and webhooks let customers pull transport orders and push enriched ETAs and tracking updates into a TMS, ERP, or MRP.
+Wakeo is a Paris-based SaaS platform for real-time multimodal supply-chain visibility across sea, air, road, rail, and parcel. It combines carrier, telematics, and AIS tracking data with data-science predictions to deliver predictive door-to-door ETAs, milestone events, congestion and disruption alerts, carbon-footprint reporting, and route reliability scoring. Wakeo's REST API and webhooks let customers pull transport orders and push enriched ETAs and tracking updates into a TMS, ERP, or MRP. The API is enterprise and customer-provisioned - the reference at docs.wakeo.co is behind a password wall and access is granted by Wakeo Customer Success or support@wakeo.co.
 
-## Access Model (read first)
+**Areas:** Supply Chain · Transportation Visibility · Real-Time Visibility · Multi-Modal · Logistics · Shipment Tracking · ETA · Freight · Supply Chain Visibility · Software-as-a-Service
 
-**Wakeo is an enterprise, customer-provisioned API.** It is not a self-serve, sign-up-and-go developer platform:
+## Wakeo on APIs.io
 
-- The API reference lives at [https://docs.wakeo.co/docs/getting-started](https://docs.wakeo.co/docs/getting-started) **behind a password wall** (confirmed 2026-07-12: the host 302-redirects to `/password`). Access is granted by a Wakeo Customer Success representative or by emailing **support@wakeo.co**.
-- The production API host **`https://api.wakeo.co` is confirmed live** and fronted by **AWS API Gateway** - unauthenticated requests return `HTTP 403 ForbiddenException`.
-- Authentication is **OAuth 2.0** - every request carries `Authorization: Bearer <ACCESS_TOKEN>` (per Wakeo's published documentation).
-- There is **no public pricing**; commercial terms are enterprise / contact-sales.
+Everything profiled for Wakeo is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/wakeo/](https://apis.io/providers/wakeo/)** — or go straight to one of the APIs or properties below.
 
-### Confirmed vs. modeled
+### APIs (3)
 
-| Aspect | Status |
-| --- | --- |
-| Base host `https://api.wakeo.co` (AWS API Gateway) | **Confirmed** (live probe) |
-| OAuth 2.0 Bearer authentication | **Confirmed** (published docs) |
-| REST + webhooks; no WebSocket | **Confirmed** (no `wss://` documented) |
-| Exact resource paths, version prefix, query params | **Modeled** (reference is password-walled) |
-| Request/response schemas | **Modeled** |
+- [Wakeo Shipments API](https://apis.io/apis/wakeo/wakeo-shipments-api/) — Register and manage tracked shipments / transport orders across sea, air, road, rail, and parcel. (Modeled.)
+- [Wakeo Tracking API](https://apis.io/apis/wakeo/wakeo-tracking-api/) — Predictive ETAs, positions, and milestone events for a tracked shipment. (Modeled.)
+- [Wakeo Webhooks API](https://apis.io/apis/wakeo/wakeo-webhooks-api/) — Subscriptions that push tracking and ETA updates to a customer endpoint. (Modeled.)
 
-The OpenAPI in this repo is an **honest model** reconstructed from Wakeo's public capability descriptions (shipment tracking, ETA, positions, events, webhooks). Every modeled path is flagged with `x-wakeo-modeled: true`. Reconcile against the private reference before use.
+### Published properties
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/wakeo/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/wakeo/refs/heads/main/apis.yml)
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Tags
+#### Agentic access (1)
 
-- Supply Chain
-- Transportation Visibility
-- Real-Time Visibility
-- Multimodal
-- Logistics
-- Shipment Tracking
-- ETA
-- Freight
-- Supply Chain Visibility
-- SaaS
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## Timestamps
+- [Wakeo Agentic Access](https://apis.io/agentic-access/wakeo/wakeo-agentic-access/)
 
-- **Created:** 2026-07-12
-- **Modified:** 2026-07-12
+#### Collections (4)
 
-## APIs
+Postman and Open Collection request collections.
 
-### Wakeo Shipments API
+- [Wakeo Visibility API (Modeled)](https://apis.io/collections/wakeo/open-wakeo/)
+- [Wakeo Visibility Shipments API](https://apis.io/collections/wakeo/open-wakeo-shipments-api/)
+- [Wakeo Visibility Shipments Tracking API](https://apis.io/collections/wakeo/open-wakeo-tracking-api/)
+- [Wakeo Visibility Shipments Webhooks API](https://apis.io/collections/wakeo/open-wakeo-webhooks-api/)
 
-Register and manage tracked shipments / transport orders across sea, air, road, rail, and parcel, and pull the latest transport orders into Wakeo.
+#### Security (2)
 
-- **Human URL:** [https://docs.wakeo.co/docs/getting-started](https://docs.wakeo.co/docs/getting-started)
-- **Base URL:** `https://api.wakeo.co`
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Wakeo Authentication](https://apis.io/security/wakeo/wakeo-authentication/)
+- [Wakeo Domain Security](https://apis.io/security/wakeo/wakeo-domain-security/)
 
-- Shipments
-- Transport Orders
-- Multimodal
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://docs.wakeo.co/docs/getting-started)
-- [OpenAPI](openapi/wakeo-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/wakeo.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/wakeo.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Wakeo Plans Pricing](https://apis.io/plans/wakeo/wakeo-plans-pricing/)
 
-### Wakeo Tracking API
+#### Rate limits (1)
 
-Retrieve predictive door-to-door ETAs, geolocation positions, and milestone events (departures, arrivals, port calls, transshipments, PODs, congestion and disruption alerts) for a tracked shipment.
+Published request limits.
 
-- **Human URL:** [https://docs.wakeo.co/docs/getting-started](https://docs.wakeo.co/docs/getting-started)
-- **Base URL:** `https://api.wakeo.co`
+- [Wakeo Rate Limits](https://apis.io/rate-limits/wakeo/wakeo-rate-limits/)
 
-#### Tags
+#### FinOps (1)
 
-- Tracking
-- ETA
-- Real-Time Visibility
+What the API costs to run, by operation.
 
-#### Properties
+- [Wakeo Finops](https://apis.io/finops/wakeo/wakeo-finops/)
 
-- [Documentation](https://docs.wakeo.co/docs/getting-started)
-- [OpenAPI](openapi/wakeo-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/wakeo.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/wakeo.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+## Where to find this API
 
-### Wakeo Webhooks API
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-Subscribe customer endpoints to shipment tracking and ETA update events so Wakeo can push enriched data into a TMS, ERP, or MRP. Server-to-endpoint HTTPS webhooks, not WebSocket.
-
-- **Human URL:** [https://docs.wakeo.co/docs/getting-started](https://docs.wakeo.co/docs/getting-started)
-- **Base URL:** `https://api.wakeo.co`
-
-#### Tags
-
-- Webhooks
-- Push Notifications
-- Integration
-
-#### Properties
-
-- [Documentation](https://docs.wakeo.co/docs/getting-started)
-- [OpenAPI](openapi/wakeo-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/wakeo.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/wakeo.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Domain Security](security/wakeo-domain-security.yml)
-- [Authentication](authentication/wakeo-authentication.yml)
-- [LinkedIn](https://www.linkedin.com/company/wakeo)
 - [Website](https://wakeo.co)
 - [Documentation](https://docs.wakeo.co/docs/getting-started)
-- [Plans](plans/wakeo-plans-pricing.yml)
-- [Rate Limits](rate-limits/wakeo-rate-limits.yml)
-- [Fin Ops](finops/wakeo-finops.yml)
 - [Blog](https://wakeo.co/blog/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 18.7** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 31.8 |
+| Contract governance | 0.0 |
+| Operational transparency | 5.3 |
+| Developer ergonomics | 20.2 |
+| Access clarity | 5.3 |
+
+**Agent readiness 20.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/wakeo/](https://apis.io/providers/wakeo/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Wakeo: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/wakeo/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
